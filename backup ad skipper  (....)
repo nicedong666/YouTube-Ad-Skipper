@@ -1,0 +1,33 @@
+(function videoAdBlocker() {
+  // Mute video ads
+  const video = document.querySelector('video');
+  if (video) {
+    video.muted = true;
+  }
+
+  // Try to hide skip buttons and overlays
+  const adSelectors = [
+    '.ytp-ad-player-overlay',  // YouTube overlay
+    '.ytp-ad-skip-button',     // Skip button
+    '.ad-showing',             // Ad container class
+    '.video-ads',              // Video ads container
+    '.ad-container',           // Generic
+  ];
+
+  adSelectors.forEach(sel => {
+    document.querySelectorAll(sel).forEach(el => {
+      el.style.display = 'none';
+    });
+  });
+
+  // Try to click skip button if available
+  const skipBtn = document.querySelector('.ytp-ad-skip-button');
+  if (skipBtn) {
+    skipBtn.click();
+    console.log("⏭️ Skip ad button clicked");
+  } else {
+    console.log("ℹ️ No skip button found");
+  }
+
+  console.log("🔇 Video muted & ads hidden if detected");
+})();
