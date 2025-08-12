@@ -1,0 +1,49 @@
+(function smartAdSkipper() {
+  function skipAds() {
+    const player = document.querySelector('.html5-video-player');
+    const video = document.querySelector('video');
+    const skipBtn = document.querySelector('.ytp-ad-skip-button');
+
+    if (!player || !video) return;
+
+    if (player.classList.contains('ad-showing')) {
+      // Ad is playing
+      console.log("🚨 Ad detected");
+
+      // Try to skip via button
+      if (skipBtn) {
+        skipBtn.click();
+        console.log("⏭️ Skipped ad with button");
+      } else {
+        // Unskippable ad - fast forward it
+        if (video.duration > 0 && !video.paused) {
+          video.currentTime = video.duration;
+          console.log("⏩ Fast-forwarded unskippable ad");
+        }
+      }
+
+      // Hide ad UI
+      [
+        '.ytp-ad-player-overlay',
+        '.ytp-ad-overlay-slot',
+        '.video-ads',
+        '.ytp-ad-image-overlay',
+        '.ytp-ad-preview-container',
+        '.ytp-ad-progress-list'
+      ].forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => {
+          el.style.display = 'none';
+        });
+      });
+
+      // Mute only during ads
+      video.muted = true;
+    } else {
+      // Video is normal
+      video.muted = false;
+    }
+  }
+
+  setInterval(skipAds, 1000);
+  console.log("🚀 Smart YouTube Ad Skipper running");
+})();
