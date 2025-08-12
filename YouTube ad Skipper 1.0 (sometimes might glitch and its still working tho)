@@ -1,0 +1,45 @@
+(function videoAdBlocker() {
+  function blockAds() {
+    // Keep video volume normal unless it's showing an ad
+    const player = document.querySelector('.html5-video-player');
+    const video = document.querySelector('video');
+
+    if (player && video) {
+      if (player.classList.contains('ad-showing')) {
+        video.muted = true;
+        console.log("🔇 Ad detected, video muted");
+      } else {
+        video.muted = false;
+        console.log("🔊 Normal video playing");
+      }
+    }
+
+    // Hide only ad-related elements
+    const adSelectors = [
+      '.ytp-ad-player-overlay',
+      '.ytp-ad-overlay-slot',
+      '.ytp-ad-skip-button',
+      '.video-ads',
+      '.ytp-ad-image-overlay',
+      '.ytp-ad-preview-container',
+      '.ytp-ad-progress-list'
+    ];
+
+    adSelectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        el.style.display = 'none';
+      });
+    });
+
+    // Try to auto-skip ads
+    const skipBtn = document.querySelector('.ytp-ad-skip-button');
+    if (skipBtn) {
+      skipBtn.click();
+      console.log("⏭️ Auto-skipped ad");
+    }
+  }
+
+  // Run continuously every second
+  setInterval(blockAds, 1000);
+  console.log("✅ YouTube ad blocker running");
+})();
